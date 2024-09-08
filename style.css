@@ -1,0 +1,7 @@
+.current-Tab{
+    background-color: gray;
+}
+.active{
+    opacity: 1;
+    scale: 1;
+}
