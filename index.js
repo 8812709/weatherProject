@@ -23,6 +23,7 @@ function switchTab(clickedtab)
         currentTab=clickedtab;
         clickedtab.classList.add("current-Tab");
     }
+    //if  it doesnt contains the searchform it means it contains user-info-container so we add searchform and remove the others else we add the other on the basis of coordinates present or not which is being decided by the function named as checkcoordinates
     if(!searchForm.classList.contains("active")){
         userInfoContainer.classList.remove("active");
         grantAccessContainer.classList.remove("active");
@@ -46,7 +47,7 @@ function checkcoordinates(){
         fetchuserweatherinfo(coordinates);
     }
 }
-
+//api call which fetch the info of the weather using coordinates which are being passed on as a parameter(which is saved in the session storage using getlocation function) inside the function such that it is being used inside the fetch 
 async function fetchuserweatherinfo(coordinates){
     const {lat,lon}=coordinates;
     grantAccessContainer.classList.remove("active");
@@ -63,7 +64,7 @@ async function fetchuserweatherinfo(coordinates){
         console.log("some sort of error while fetching the data from weatherapi",error);
     }
 }
-
+//it used to display all the important information on the screen which is passed inside the function parameter of the renderfunction and on the basis of that it uses chain-question method and returns the data without throwing the error
 function renderweatherinfo(weatherInfo){
         //fistly, we have to fethc the elements 
 
@@ -86,7 +87,7 @@ function renderweatherinfo(weatherInfo){
         humidity.innerText = weatherInfo?.main?.humidity;
         cloudiness.innerText = weatherInfo?.clouds?.all;
 }
-
+//to get the location on click event on grant-access which takes the information from the geolocation api and stores it in the sessionstorage and then calls another function named as fetchuserweather which fetch the api using lon and lat method
 function getLocation(){
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -103,7 +104,7 @@ function showPosition(position){
     sessionStorage.setItem("user-coordinates",JSON.stringify(usercoordinates));
     fetchuserweatherinfo(usercoordinates);
 }
-
+//api call using city name on the search form on submit event
 async function searchWeatherInfo(city){
     userInfoContainer.classList.remove("active");
     grantAccessContainer.classList.remove("active");
@@ -122,11 +123,6 @@ async function searchWeatherInfo(city){
 }
 
 
-
-
-
-
-
 //event listner of the tabs 
 userTab.addEventListener("click",()=>{
     switchTab(userTab);
@@ -139,7 +135,7 @@ searchTab.addEventListener("click",()=>{
 grantAccessbtn.addEventListener("click",getLocation);
 
 //evemt listener for search input
-const searchInput=document.querySelector("[data-searchInput]");
+const searchInput=document.querySelector("[data-searchInput]"); //inpit of the textfield of the city name and then using it to get the value and store it in some sort of variable
 searchForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     let cityname=searchInput.value;
@@ -147,6 +143,6 @@ searchForm.addEventListener("submit",(e)=>{
         return;
     }
     else{
-       searchWeatherInfo(cityname); 
+       searchWeatherInfo(cityname); //seperate api call for the wearther data using city name
     }
 });
